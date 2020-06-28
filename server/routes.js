@@ -17,7 +17,6 @@ Router.post('/login',(peticion, respuesta) =>{
 });
 
 Router.get('/events/all',(peticion,respuesta) => {
-        console.log(peticion.session.user)
     EventModel.find({id_user:peticion.session.user.userId}).exec((err,doc)=>{
         if(err){
             respuesta.status(500);
@@ -43,6 +42,36 @@ Router.get('/events/all',(peticion,respuesta) => {
             respuesta.json(eventos);
         }
     })    
+});
+Router.post('/events/new',(peticion,respuesta) => {
+    let newEvent = new EventModel();
+    if(peticion.body.allDay=='true'){
+        newEvent = new EventModel({
+            title: peticion.body.title,
+            start: peticion.body.start,
+            allDay: peticion.body.allDay,
+            id_user: peticion.session.user.userId
+        });
+    }else{
+        newEvent = new EventModel({
+            title: peticion.body.title,
+            start: peticion.body.start,
+            startTime: peticion.body.startTime,
+            end: peticion.body.end,
+            endTime: peticion.body.endTime,
+            allDay: peticion.body.allDay,
+            id_user: peticion.session.user.userId
+        });
+    }
+    console.log(newEvent)
+    newEvent.save((error) => {
+        if(error){
+            respuesta.status("500")
+            respuesta.json(error)
+        }else{
+            respuesta.send("Se creo evento")
+        }
+    });
 });
 
 module.exports = Router;

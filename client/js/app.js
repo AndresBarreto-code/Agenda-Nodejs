@@ -24,31 +24,37 @@ class EventManager {
     guardarEvento() {
         $('.addButton').on('click', (ev) => {
             ev.preventDefault()
-            let nombre = $('#titulo').val(),
-            start = $('#start_date').val(),
-            title = $('#titulo').val(),
-            end = '',
-            start_hour = '',
-            end_hour = '';
-
+            let title = $('#titulo').val(),
+                start = $('#start_date').val(),                
+                allDay=true,
+                end = $('#end_date').val(),
+                start_hour = $('#start_hour').val(),
+                end_hour = $('#end_hour').val();
+            let startC = start + ' ' + start_hour;
+            let endC = end + ' ' + end_hour;
             if (!$('#allDay').is(':checked')) {
-                end = $('#end_date').val()
-                start_hour = $('#start_hour').val()
-                end_hour = $('#end_hour').val()
-                start = start + 'T' + start_hour
-                end = end + 'T' + end_hour
+                allDay=false;    
+            }
+            let eventoCal = {
+                title: title,
+                start: startC,
+                end: endC,
+                allDay: allDay
+            }
+            let eventoPost={
+                title: title,
+                start: start,
+                startTime: start_hour,
+                end: end,
+                endTime: end_hour,
+                allDay: allDay
             }
             let url = this.urlBase + "/new"
             if (title != "" && start != "") {
-                let ev = {
-                    title: title,
-                    start: start,
-                    end: end
-                }
-                $.post(url, ev, (response) => {
+                $.post(url, eventoPost, (response) => {
                     alert(response)
                 })
-                $('.calendario').fullCalendar('renderEvent', ev)
+                $('.calendario').fullCalendar('renderEvent', eventoCal)
             } else {
                 alert("Complete los campos obligatorios para el evento")
             }
