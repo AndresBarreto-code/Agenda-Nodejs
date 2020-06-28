@@ -26,12 +26,14 @@ Router.get('/events/all',(peticion,respuesta) => {
             doc.forEach(evento=>{
                 if(evento.allDay){
                     eventos.push({
+                        id: evento._id,
                         title:evento.title,
                         start:evento.start,
                         allDay:evento.allDay
                     })
                 }else{
                     eventos.push({
+                        id: evento._id,
                         title:evento.title,
                         start:evento.start + " " +evento.startTime,
                         end:evento.end + " " +evento.endTime,
@@ -64,14 +66,24 @@ Router.post('/events/new',(peticion,respuesta) => {
         });
     }
     console.log(newEvent)
-    newEvent.save((error) => {
+    newEvent.save((error,room) => {
         if(error){
             respuesta.status("500")
             respuesta.json(error)
         }else{
-            respuesta.send("Se creo evento")
+            respuesta.json({msg:"Se creo evento",id:room.id})
         }
     });
 });
+Router.post('/events/delete/:id',(peticion,respuesta) => {
+    let id = peticion.params.id;
+    EventModel.remove({_id: id,id_user:peticion.session.user.userId}, (error) => {
+        if(error) {
+            respuesta.status(500)
+            respuesta.json(error)
+        }
+        respuesta.send("Registro eliminado")
+    })
+})
 
 module.exports = Router;

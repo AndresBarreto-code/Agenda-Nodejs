@@ -15,9 +15,9 @@ class EventManager {
     }
 
     eliminarEvento(evento) {
-        let eventId = evento.id
+        let eventId = evento.id;
         $.post('/events/delete/'+eventId, {id: eventId}, (response) => {
-            alert(response)
+            alert(response);
         })
     }
 
@@ -35,12 +35,7 @@ class EventManager {
             if (!$('#allDay').is(':checked')) {
                 allDay=false;    
             }
-            let eventoCal = {
-                title: title,
-                start: startC,
-                end: endC,
-                allDay: allDay
-            }
+            
             let eventoPost={
                 title: title,
                 start: start,
@@ -52,9 +47,15 @@ class EventManager {
             let url = this.urlBase + "/new"
             if (title != "" && start != "") {
                 $.post(url, eventoPost, (response) => {
-                    alert(response)
-                })
-                $('.calendario').fullCalendar('renderEvent', eventoCal)
+                    let eventoCal = {
+                        id:response.id,
+                        title: title,
+                        start: startC,
+                        end: endC,
+                        allDay: allDay
+                    }
+                    $('.calendario').fullCalendar('renderEvent', eventoCal)
+                });                
             } else {
                 alert("Complete los campos obligatorios para el evento")
             }
@@ -108,6 +109,7 @@ class EventManager {
                 $('.delete').css('background-color', '#a70f19')
             },
             eventDragStop: (event,jsEvent) => {
+                console.log(event.id);
                 $('.delete').find('img').attr('src', "img/delete.png");
                 var trashEl = $('.delete');
                 var ofs = trashEl.offset();
