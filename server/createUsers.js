@@ -1,5 +1,4 @@
 const {UserModel,EventModel} = require('./model.js');
-
 let user1 = new UserModel({
     userId:106,
 	full_name:'Mail 1 Mail',
@@ -43,3 +42,32 @@ user3.save((error)=>{
     }
 });
 
+let eventExample1 = new EventModel({
+    title:"Ejemeplo 1",
+    start:"2020-06-20",
+    allDay:true,
+    id_user:106
+});
+let eventExample2 = new EventModel({
+    title:"Ejemeplo 2",
+    start:"2020-06-8",
+    startTime:"07:00",
+    end:"2020-06-12",
+    endTime:"08:00",
+    allDay:false,
+    id_user:106
+});
+eventExample1.save((error)=>{
+    if(error){
+        console.log({status:500,error:error})
+    }else{
+        console.log({status:200,msg:'Evento creado'})
+    }
+});
+eventExample2.save((error)=>{
+    if(error){
+        console.log({status:500,error:error})
+    }else{
+        console.log({status:200,msg:'Evento creado'})
+    }
+});

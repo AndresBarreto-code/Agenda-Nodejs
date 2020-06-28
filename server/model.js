@@ -12,7 +12,6 @@ let UserModel = mongoose.model('Users', UserSchema);
 module.exports.UserModel = UserModel;
 
 let EventSchema = new Schema({
-	eventId:{ type: Number, require: true, unique:true },
 	title:{ type: String, require: true },
     start:{ type: String, require: true },
     startTime:{ type: String},
