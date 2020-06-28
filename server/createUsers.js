@@ -1,5 +1,5 @@
 const {UserModel,EventModel} = require('./model.js');
-console.log(UserModel)
+
 let user1 = new UserModel({
     userId:106,
 	full_name:'Mail 1 Mail',
