@@ -85,5 +85,18 @@ Router.post('/events/delete/:id',(peticion,respuesta) => {
         respuesta.send("Registro eliminado")
     })
 })
+Router.post('/events/update/:id',(peticion,respuesta) => {
+    const id = peticion.params.id;
+    let update = peticion.body;
+    delete update['id'];
+    console.log(update);
+    EventModel.findOneAndUpdate({_id: id,id_user:peticion.session.user.userId},update, (error) => {
+        if(error) {
+            respuesta.status(500)
+            respuesta.json(error)
+        }
+        respuesta.send("Registro actualizado")
+    });
+})
 
 module.exports = Router;

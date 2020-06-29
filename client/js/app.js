@@ -125,6 +125,38 @@ class EventManager {
                 }
             })
         }
+        actualizarEvento(evento) {
+            let id = evento.id,
+                start = moment(evento.start).format('YYYY-MM-DD HH:mm:ss'),
+                end = moment(evento.end).format('YYYY-MM-DD HH:mm:ss'),
+                start_date,
+                end_date,
+                start_hour,
+                end_hour;
+    
+            start_date = start.substr(0,10);
+            end_date = end.substr(0,10);
+            start_hour = start.substr(11,8);
+            end_hour = end.substr(11,8);
+
+            let form_data = {id: id,
+                start: start_date,
+                end: end_date,
+                startTime: start_hour,
+                endTime: end_hour
+            };
+
+            console.log(form_data);
+    
+            $.post('/events/update/'+id,form_data,(response) =>{
+                if (response=="OK") {
+                  alert('Se ha actualizado el evento exitosamente')
+                }else {
+                  alert(response)
+                }
+            })
+        }
+    
     }
 
     const Manager = new EventManager()
